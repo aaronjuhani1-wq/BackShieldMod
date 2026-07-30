@@ -1,100 +1,50 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <OutputType>Library</OutputType>
-    <TargetFramework>net48</TargetFramework>
-    <RootNamespace>JotunnModStub</RootNamespace>
-    <AssemblyName>JotunnModStub</AssemblyName>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-    <LangVersion>10</LangVersion>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-  </PropertyGroup>
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <Optimize>false</Optimize>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-  </PropertyGroup>
+<PropertyGroup>
+  <TargetFramework>net48</TargetFramework>
+  <LangVersion>latest</LangVersion>
+  <VALHEIM_INSTALL>D:\SteamLibrary\steamapps\common\Valheim</VALHEIM_INSTALL>
+  <BEPINEX_PATH>C:\Users\aaron\AppData\Roaming\r2modmanPlus-local\Valheim\profiles\BackShield\BepInEx</BEPINEX_PATH>
+  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  <Nullable>disable</Nullable>
+  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+</PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Reference Include="BepInEx">
+      <HintPath>$(BEPINEX_PATH)\core\BepInEx.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(BEPINEX_PATH)\core\0Harmony.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(VALHEIM_INSTALL)\valheim_Data\Managed\UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(VALHEIM_INSTALL)\valheim_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>$(VALHEIM_INSTALL)\valheim_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="assembly_valheim">
+      <HintPath>$(VALHEIM_INSTALL)\valheim_Data\Managed\assembly_valheim.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="assembly_utils">
+      <HintPath>$(VALHEIM_INSTALL)\valheim_Data\Managed\assembly_utils.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
   </ItemGroup>
 
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
-    <None Include="README.md" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="JotunnLib" Version="2.27.1" />
-  </ItemGroup>
-
-  <PropertyGroup>
-    <VALHEIM_MANAGED>$(VALHEIM_INSTALL)/valheim_Data/Managed</VALHEIM_MANAGED>
-    <UNITY_FOLDER>$(SolutionDir)JotunnModStubUnity</UNITY_FOLDER>
-  </PropertyGroup>
-
-  <Target Name="CopyToUnity">
-    <Message Text="Copy assemblies to Unity" Importance="high" />
-    <Copy SourceFiles="$(BEPINEX_PATH)/core/BepInEx.dll" DestinationFolder="$(UNITY_FOLDER)/Assets/Assemblies" />
-    <Copy SourceFiles="$(BEPINEX_PATH)/core/0Harmony.dll" DestinationFolder="$(UNITY_FOLDER)/Assets/Assemblies" />
-    <Copy SourceFiles="$(BEPINEX_PATH)/core/Mono.Cecil.dll" DestinationFolder="$(UNITY_FOLDER)/Assets/Assemblies" />
-    <Copy SourceFiles="$(BEPINEX_PATH)/core/MonoMod.Utils.dll" DestinationFolder="$(UNITY_FOLDER)/Assets/Assemblies" />
-    <Copy SourceFiles="$(BEPINEX_PATH)/core/MonoMod.RuntimeDetour.dll" DestinationFolder="$(UNITY_FOLDER)/Assets/Assemblies" />
-    <Copy SourceFiles="$(TargetDir)Jotunn.dll" DestinationFolder="$(UNITY_FOLDER)/Assets/Assemblies" />
-    <Copy SourceFiles="$(TargetDir)$(TargetName).dll" DestinationFolder="$(UNITY_FOLDER)/Assets/Assemblies" />
-    <Copy SourceFiles="$(TargetDir)$(TargetName).pdb" DestinationFolder="$(UNITY_FOLDER)/Assets/Assemblies" />
-    <!-- mdb generation doesn't work from portable pdbs, which are the only kind supported under Linux -->
-    <Copy
-      Condition="Exists('$(TargetDir)$(TargetName).dll.mdb')"
-      SourceFiles="$(TargetDir)$(TargetName).dll.mdb"
-      DestinationFolder="$(UNITY_FOLDER)/Assets/Assemblies"
-    />
-    <Copy SourceFiles="$(VALHEIM_MANAGED)/Assembly-CSharp.dll" DestinationFolder="$(UNITY_FOLDER)/Assets/Assemblies" />
-    <Copy SourceFiles="$(VALHEIM_MANAGED)/assembly_valheim.dll" DestinationFolder="$(UNITY_FOLDER)/Assets/Assemblies" />
-    <Copy SourceFiles="$(VALHEIM_MANAGED)/assembly_utils.dll" DestinationFolder="$(UNITY_FOLDER)/Assets/Assemblies" />
-    <Copy SourceFiles="$(VALHEIM_MANAGED)/assembly_postprocessing.dll" DestinationFolder="$(UNITY_FOLDER)/Assets/Assemblies" />
-    <Copy SourceFiles="$(VALHEIM_MANAGED)/assembly_sunshafts.dll" DestinationFolder="$(UNITY_FOLDER)/Assets/Assemblies" />
-    <Copy SourceFiles="$(VALHEIM_MANAGED)/assembly_guiutils.dll" DestinationFolder="$(UNITY_FOLDER)/Assets/Assemblies" />
-    <Copy SourceFiles="$(VALHEIM_MANAGED)/assembly_lux.dll" DestinationFolder="$(UNITY_FOLDER)/Assets/Assemblies" />
-    <Copy SourceFiles="$(VALHEIM_MANAGED)/assembly_simplemeshcombine.dll" DestinationFolder="$(UNITY_FOLDER)/Assets/Assemblies" />
-    <Copy SourceFiles="$(VALHEIM_MANAGED)/assembly_googleanalytics.dll" DestinationFolder="$(UNITY_FOLDER)/Assets/Assemblies" />
-    <Copy SourceFiles="$(VALHEIM_MANAGED)/PlayFab.dll" DestinationFolder="$(UNITY_FOLDER)/Assets/Assemblies" />
-    <Copy SourceFiles="$(VALHEIM_MANAGED)/PlayFabParty.dll" DestinationFolder="$(UNITY_FOLDER)/Assets/Assemblies" />
-    <Copy SourceFiles="$(VALHEIM_MANAGED)/Splatform.dll" DestinationFolder="$(UNITY_FOLDER)/Assets/Assemblies" />
-    <Copy SourceFiles="$(VALHEIM_MANAGED)/Splatform.Steam.dll" DestinationFolder="$(UNITY_FOLDER)/Assets/Assemblies" />
-    <Copy SourceFiles="$(VALHEIM_MANAGED)/gui_framework.dll" DestinationFolder="$(UNITY_FOLDER)/Assets/Assemblies" />
-    <Copy SourceFiles="$(VALHEIM_MANAGED)/com.rlabrecque.steamworks.net.dll" DestinationFolder="$(UNITY_FOLDER)/Assets/Assemblies" />
-    <Copy SourceFiles="$(VALHEIM_MANAGED)/SoftReferenceableAssets.dll" DestinationFolder="$(UNITY_FOLDER)/Assets/Assemblies" />
+<!-- this copies the compiled DLL automatically to r2modman's plugins folder -->
+  <Target Name="AutoCopyDLL" AfterTargets="Build">
+    <Copy SourceFiles="$(TargetDir)$(TargetFileName)" DestinationFolder="$(BEPINEX_PATH)\plugins" />
+    <Message Text="=== MOD COPIED AUTOMATICALLY TO R2MODMAN! ===" Importance="high" />
   </Target>
 
-  <Target Name="JotunnPostBuildTask" AfterTargets="Build">
-    <CallTarget Targets="CopyToUnity" Condition="Exists('$(UNITY_FOLDER)')" />
-  </Target>
-
-  <Target Name="JotunnPostBuildTaskWin" AfterTargets="Build" Condition=" '$(OS)' == 'Windows_NT' ">
-    <Exec Command="powershell.exe -ExecutionPolicy RemoteSigned -File &quot;$(SolutionDir)scripts/publish.ps1&quot; -Target &quot;$(ConfigurationName)&quot; -TargetPath &quot;$(TargetDir.TrimEnd('\'))&quot; -TargetAssembly &quot;$(TargetFileName)&quot; -ValheimPath &quot;$(VALHEIM_INSTALL.TrimEnd('\'))&quot; -DeployPath &quot;$(MOD_DEPLOYPATH.TrimEnd('\'))&quot; -ProjectPath &quot;$(ProjectDir.TrimEnd('\'))&quot; " />
-  </Target>
-
-  <Target Name="JotunnPostBuildTaskUnix" AfterTargets="Build" Condition=" '$(OS)' == 'Unix' ">
-    <Exec  Command="sh &quot;$(SolutionDir)scripts/publish.sh&quot; --target &quot;$(ConfigurationName)&quot; --target-path &quot;$(TargetDir)&quot; --target-assembly &quot;$(TargetFileName)&quot; --valheim-path &quot;$(VALHEIM_INSTALL)&quot; --deploy-path &quot;$(MOD_DEPLOYPATH)&quot; --project-path &quot;$(ProjectDir)&quot;" />
-  </Target>
 </Project>
